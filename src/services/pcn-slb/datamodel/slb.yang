@@ -1,0 +1,31 @@
+module slb {
+  yang-version 1.1;
+  namespace "http://polycube.network/slb";
+  prefix "slb";
+
+  import polycube-base { prefix "polycube-base"; }
+  import polycube-transparent-base { prefix "polycube-transparent-base"; }
+
+  organization "Polycube open source project";
+  description "YANG data model for the Polycube smart load balance service";
+
+  polycube-base:service-description "SLB Service";
+  polycube-base:service-version "2.0";
+  polycube-base:service-name "slb";
+  polycube-base:service-min-kernel-version "4.14.0";
+
+  uses "polycube-transparent-base:transparent-base-yang-module";
+
+  leaf channel-loc {
+      type enumeration {
+          enum MSB;
+          enum LSB;
+      }
+      description "where the channel info located? Default is LSB.";
+  }
+
+  leaf channel-len {
+      type uint8;
+      description "number of bits used for channel";
+  }
+}
