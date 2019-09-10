@@ -17,6 +17,6 @@
 static __always_inline
 int handle_rx(struct CTXTYPE *ctx, struct pkt_metadata *md) {
   // Put your eBPF datapath code here
-  pcn_log(ctx, LOG_INFO, "Hello from polycube! :-)");
-  return RX_DROP;
+  pcn_log(ctx, LOG_INFO, "Hello from slb! :-)");
+  return RX_OK;
 }

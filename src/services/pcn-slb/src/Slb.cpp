@@ -38,19 +38,19 @@ void Slb::packet_in(polycube::service::Sense sense,
 }
 
 SlbChannelLocEnum Slb::getChannelLoc() {
-  throw std::runtime_error("Slb::getChannelLoc: Method not implemented");
+    return ch_loc;
 }
 
 void Slb::setChannelLoc(const SlbChannelLocEnum &value) {
-  throw std::runtime_error("Slb::setChannelLoc: Method not implemented");
+    ch_loc = value;
 }
 
 uint8_t Slb::getChannelLen() {
-  throw std::runtime_error("Slb::getChannelLen: Method not implemented");
+    return ch_len;
 }
 
 void Slb::setChannelLen(const uint8_t &value) {
-  throw std::runtime_error("Slb::setChannelLen: Method not implemented");
+    ch_len = value;
 }
 
 

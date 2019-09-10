@@ -12,7 +12,6 @@
 #include "../base/SlbBase.h"
 
 
-
 using namespace polycube::service::model;
 
 class Slb : public SlbBase {
@@ -35,4 +34,8 @@ class Slb : public SlbBase {
   /// </summary>
   uint8_t getChannelLen() override;
   void setChannelLen(const uint8_t &value) override;
+
+ private:
+  SlbChannelLocEnum ch_loc;
+  uint8_t ch_len;
 };
