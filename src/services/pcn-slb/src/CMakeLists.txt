@@ -23,9 +23,8 @@ add_library(pcn-slb SHARED
   Slb-lib.cpp)
 
 # load ebpf datapath code a variable
-load_file_as_variable(pcn-slb
-  Slb_dp.c
-  slb_code)
+load_file_as_variable(pcn-slb Slb_dp_ingress.c slb_code_ingress)
+load_file_as_variable(pcn-slb Slb_dp_egress.c slb_code_egress)
 
 # load datamodel in a variable
 load_file_as_variable(pcn-slb

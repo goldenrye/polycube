@@ -10,10 +10,13 @@
 
 
 #include "Slb.h"
-#include "Slb_dp.h"
+#include "Slb_dp_ingress.h"
+#include "Slb_dp_egress.h"
+
+using namespace polycube::service;
 
 Slb::Slb(const std::string name, const SlbJsonObject &conf)
-  : TransparentCube(conf.getBase(), { slb_code }, {}),
+  : TransparentCube(conf.getBase(), { slb_code_ingress }, { slb_code_egress }),
     SlbBase(name) {
   logger()->info("Creating Slb instance");
   if (conf.channelLocIsSet()) {
@@ -60,6 +63,9 @@ SlbIngressActionEnum Slb::getIngressAction() {
 
 void Slb::setIngressAction(const SlbIngressActionEnum &value) {
     i_act = value;
+    uint8_t action = static_cast<uint8_t>(value);
+    auto t = get_array_table<uint8_t>("action_map", 0, ProgramType::INGRESS);
+    t.set(0x0, action);
 }
 
 SlbEgressActionEnum Slb::getEgressAction() {
@@ -68,6 +74,9 @@ SlbEgressActionEnum Slb::getEgressAction() {
 
 void Slb::setEgressAction(const SlbEgressActionEnum &value) {
     e_act = value;
+    uint8_t action = static_cast<uint8_t>(value);
+    auto t = get_array_table<uint8_t>("action_map", 0, ProgramType::EGRESS);
+    t.set(0x0, action);
 }
 
 
