@@ -50,4 +50,16 @@ class SlbBase: public virtual polycube::service::TransparentCube {
   /// </summary>
   virtual uint8_t getChannelLen() = 0;
   virtual void setChannelLen(const uint8_t &value) = 0;
+
+  /// <summary>
+  /// Action performed on ingress packets
+  /// </summary>
+  virtual SlbIngressActionEnum getIngressAction() = 0;
+  virtual void setIngressAction(const SlbIngressActionEnum &value) = 0;
+
+  /// <summary>
+  /// Action performed on egress packets
+  /// </summary>
+  virtual SlbEgressActionEnum getEgressAction() = 0;
+  virtual void setEgressAction(const SlbEgressActionEnum &value) = 0;
 };

@@ -136,6 +136,40 @@ read_slb_channel_loc_by_id(const std::string &name) {
 }
 
 /**
+* @brief   Read egress-action by ID
+*
+* Read operation of resource: egress-action*
+*
+* @param[in] name ID of name
+*
+* Responses:
+* SlbEgressActionEnum
+*/
+SlbEgressActionEnum
+read_slb_egress_action_by_id(const std::string &name) {
+  auto slb = get_cube(name);
+  return slb->getEgressAction();
+
+}
+
+/**
+* @brief   Read ingress-action by ID
+*
+* Read operation of resource: ingress-action*
+*
+* @param[in] name ID of name
+*
+* Responses:
+* SlbIngressActionEnum
+*/
+SlbIngressActionEnum
+read_slb_ingress_action_by_id(const std::string &name) {
+  auto slb = get_cube(name);
+  return slb->getIngressAction();
+
+}
+
+/**
 * @brief   Update slb by ID
 *
 * Update operation of resource: slb*
@@ -187,6 +221,42 @@ update_slb_channel_loc_by_id(const std::string &name, const SlbChannelLocEnum &v
   auto slb = get_cube(name);
 
   return slb->setChannelLoc(value);
+}
+
+/**
+* @brief   Update egress-action by ID
+*
+* Update operation of resource: egress-action*
+*
+* @param[in] name ID of name
+* @param[in] value Action performed on egress packets
+*
+* Responses:
+*
+*/
+void
+update_slb_egress_action_by_id(const std::string &name, const SlbEgressActionEnum &value) {
+  auto slb = get_cube(name);
+
+  return slb->setEgressAction(value);
+}
+
+/**
+* @brief   Update ingress-action by ID
+*
+* Update operation of resource: ingress-action*
+*
+* @param[in] name ID of name
+* @param[in] value Action performed on ingress packets
+*
+* Responses:
+*
+*/
+void
+update_slb_ingress_action_by_id(const std::string &name, const SlbIngressActionEnum &value) {
+  auto slb = get_cube(name);
+
+  return slb->setIngressAction(value);
 }
 
 /**

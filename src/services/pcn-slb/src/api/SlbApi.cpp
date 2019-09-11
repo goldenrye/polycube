@@ -104,6 +104,40 @@ Response read_slb_channel_loc_by_id_handler(
   }
 }
 
+Response read_slb_egress_action_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+
+    auto x = read_slb_egress_action_by_id(unique_name);
+    nlohmann::json response_body;
+    response_body = SlbJsonObject::SlbEgressActionEnum_to_string(x);
+    return { kOk, ::strdup(response_body.dump().c_str()) };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
+Response read_slb_ingress_action_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+
+    auto x = read_slb_ingress_action_by_id(unique_name);
+    nlohmann::json response_body;
+    response_body = SlbJsonObject::SlbIngressActionEnum_to_string(x);
+    return { kOk, ::strdup(response_body.dump().c_str()) };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
 Response read_slb_list_by_id_handler(
   const char *name, const Key *keys,
   size_t num_keys ) {
@@ -191,6 +225,40 @@ Response update_slb_channel_loc_by_id_handler(
     auto request_body = nlohmann::json::parse(std::string { value });
     SlbChannelLocEnum unique_value_ = SlbJsonObject::string_to_SlbChannelLocEnum(request_body);
     update_slb_channel_loc_by_id(unique_name, unique_value_);
+    return { kOk, nullptr };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
+Response update_slb_egress_action_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ,
+  const char *value) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+    auto request_body = nlohmann::json::parse(std::string { value });
+    SlbEgressActionEnum unique_value_ = SlbJsonObject::string_to_SlbEgressActionEnum(request_body);
+    update_slb_egress_action_by_id(unique_name, unique_value_);
+    return { kOk, nullptr };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
+Response update_slb_ingress_action_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ,
+  const char *value) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+    auto request_body = nlohmann::json::parse(std::string { value });
+    SlbIngressActionEnum unique_value_ = SlbJsonObject::string_to_SlbIngressActionEnum(request_body);
+    update_slb_ingress_action_by_id(unique_name, unique_value_);
     return { kOk, nullptr };
   } catch(const std::exception &e) {
     return { kGenericError, ::strdup(e.what()) };

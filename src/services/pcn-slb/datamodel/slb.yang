@@ -21,11 +21,33 @@ module slb {
           enum MSB;
           enum LSB;
       }
+      default LSB;
       description "where the channel info located? Default is LSB.";
   }
 
   leaf channel-len {
       type uint8;
+      default 8;
       description "number of bits used for channel";
+  }
+
+  leaf ingress-action {
+    type enumeration {
+      enum DROP;
+      enum PASS;
+      enum SLOWPATH;
+    }
+    default PASS;
+    description "Action performed on ingress packets";
+  }
+
+  leaf egress-action {
+    type enumeration {
+      enum DROP;
+      enum PASS;
+      enum SLOWPATH;
+    }
+    default PASS;
+    description "Action performed on egress packets";
   }
 }

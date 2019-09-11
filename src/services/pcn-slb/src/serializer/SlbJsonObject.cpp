@@ -19,8 +19,14 @@ namespace model {
 
 SlbJsonObject::SlbJsonObject() {
   m_nameIsSet = false;
-  m_channelLocIsSet = false;
-  m_channelLenIsSet = false;
+  m_channelLoc = SlbChannelLocEnum::LSB;
+  m_channelLocIsSet = true;
+  m_channelLen = 8;
+  m_channelLenIsSet = true;
+  m_ingressAction = SlbIngressActionEnum::PASS;
+  m_ingressActionIsSet = true;
+  m_egressAction = SlbEgressActionEnum::PASS;
+  m_egressActionIsSet = true;
 }
 
 SlbJsonObject::SlbJsonObject(const nlohmann::json &val) :
@@ -28,6 +34,8 @@ SlbJsonObject::SlbJsonObject(const nlohmann::json &val) :
   m_nameIsSet = false;
   m_channelLocIsSet = false;
   m_channelLenIsSet = false;
+  m_ingressActionIsSet = false;
+  m_egressActionIsSet = false;
 
 
   if (val.count("name")) {
@@ -40,6 +48,14 @@ SlbJsonObject::SlbJsonObject(const nlohmann::json &val) :
 
   if (val.count("channel-len")) {
     setChannelLen(val.at("channel-len").get<uint8_t>());
+  }
+
+  if (val.count("ingress-action")) {
+    setIngressAction(string_to_SlbIngressActionEnum(val.at("ingress-action").get<std::string>()));
+  }
+
+  if (val.count("egress-action")) {
+    setEgressAction(string_to_SlbEgressActionEnum(val.at("egress-action").get<std::string>()));
   }
 }
 
@@ -59,6 +75,14 @@ nlohmann::json SlbJsonObject::toJson() const {
 
   if (m_channelLenIsSet) {
     val["channel-len"] = m_channelLen;
+  }
+
+  if (m_ingressActionIsSet) {
+    val["ingress-action"] = SlbIngressActionEnum_to_string(m_ingressAction);
+  }
+
+  if (m_egressActionIsSet) {
+    val["egress-action"] = SlbEgressActionEnum_to_string(m_egressAction);
   }
 
   return val;
@@ -131,6 +155,84 @@ void SlbJsonObject::unsetChannelLen() {
   m_channelLenIsSet = false;
 }
 
+SlbIngressActionEnum SlbJsonObject::getIngressAction() const {
+  return m_ingressAction;
+}
+
+void SlbJsonObject::setIngressAction(SlbIngressActionEnum value) {
+  m_ingressAction = value;
+  m_ingressActionIsSet = true;
+}
+
+bool SlbJsonObject::ingressActionIsSet() const {
+  return m_ingressActionIsSet;
+}
+
+void SlbJsonObject::unsetIngressAction() {
+  m_ingressActionIsSet = false;
+}
+
+std::string SlbJsonObject::SlbIngressActionEnum_to_string(const SlbIngressActionEnum &value){
+  switch(value) {
+    case SlbIngressActionEnum::DROP:
+      return std::string("drop");
+    case SlbIngressActionEnum::PASS:
+      return std::string("pass");
+    case SlbIngressActionEnum::SLOWPATH:
+      return std::string("slowpath");
+    default:
+      throw std::runtime_error("Bad Slb ingressAction");
+  }
+}
+
+SlbIngressActionEnum SlbJsonObject::string_to_SlbIngressActionEnum(const std::string &str){
+  if (JsonObjectBase::iequals("drop", str))
+    return SlbIngressActionEnum::DROP;
+  if (JsonObjectBase::iequals("pass", str))
+    return SlbIngressActionEnum::PASS;
+  if (JsonObjectBase::iequals("slowpath", str))
+    return SlbIngressActionEnum::SLOWPATH;
+  throw std::runtime_error("Slb ingressAction is invalid");
+}
+SlbEgressActionEnum SlbJsonObject::getEgressAction() const {
+  return m_egressAction;
+}
+
+void SlbJsonObject::setEgressAction(SlbEgressActionEnum value) {
+  m_egressAction = value;
+  m_egressActionIsSet = true;
+}
+
+bool SlbJsonObject::egressActionIsSet() const {
+  return m_egressActionIsSet;
+}
+
+void SlbJsonObject::unsetEgressAction() {
+  m_egressActionIsSet = false;
+}
+
+std::string SlbJsonObject::SlbEgressActionEnum_to_string(const SlbEgressActionEnum &value){
+  switch(value) {
+    case SlbEgressActionEnum::DROP:
+      return std::string("drop");
+    case SlbEgressActionEnum::PASS:
+      return std::string("pass");
+    case SlbEgressActionEnum::SLOWPATH:
+      return std::string("slowpath");
+    default:
+      throw std::runtime_error("Bad Slb egressAction");
+  }
+}
+
+SlbEgressActionEnum SlbJsonObject::string_to_SlbEgressActionEnum(const std::string &str){
+  if (JsonObjectBase::iequals("drop", str))
+    return SlbEgressActionEnum::DROP;
+  if (JsonObjectBase::iequals("pass", str))
+    return SlbEgressActionEnum::PASS;
+  if (JsonObjectBase::iequals("slowpath", str))
+    return SlbEgressActionEnum::SLOWPATH;
+  throw std::runtime_error("Slb egressAction is invalid");
+}
 
 }
 }

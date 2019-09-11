@@ -19,11 +19,12 @@ Slb::Slb(const std::string name, const SlbJsonObject &conf)
   if (conf.channelLocIsSet()) {
     setChannelLoc(conf.getChannelLoc());
   }
-
   if (conf.channelLenIsSet()) {
     setChannelLen(conf.getChannelLen());
   }
 
+    setIngressAction(conf.getIngressAction());
+    setEgressAction(conf.getEgressAction());
 }
 
 
@@ -51,6 +52,22 @@ uint8_t Slb::getChannelLen() {
 
 void Slb::setChannelLen(const uint8_t &value) {
     ch_len = value;
+}
+
+SlbIngressActionEnum Slb::getIngressAction() {
+    return i_act;
+}
+
+void Slb::setIngressAction(const SlbIngressActionEnum &value) {
+    i_act = value;
+}
+
+SlbEgressActionEnum Slb::getEgressAction() {
+    return e_act;
+}
+
+void Slb::setEgressAction(const SlbEgressActionEnum &value) {
+    e_act = value;
 }
 
 

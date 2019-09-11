@@ -37,11 +37,15 @@ namespace SlbApiImpl {
   SlbJsonObject read_slb_by_id(const std::string &name);
   uint8_t read_slb_channel_len_by_id(const std::string &name);
   SlbChannelLocEnum read_slb_channel_loc_by_id(const std::string &name);
+  SlbEgressActionEnum read_slb_egress_action_by_id(const std::string &name);
+  SlbIngressActionEnum read_slb_ingress_action_by_id(const std::string &name);
   std::vector<SlbJsonObject> read_slb_list_by_id();
   void replace_slb_by_id(const std::string &name, const SlbJsonObject &value);
   void update_slb_by_id(const std::string &name, const SlbJsonObject &value);
   void update_slb_channel_len_by_id(const std::string &name, const uint8_t &value);
   void update_slb_channel_loc_by_id(const std::string &name, const SlbChannelLocEnum &value);
+  void update_slb_egress_action_by_id(const std::string &name, const SlbEgressActionEnum &value);
+  void update_slb_ingress_action_by_id(const std::string &name, const SlbIngressActionEnum &value);
   void update_slb_list_by_id(const std::vector<SlbJsonObject> &value);
 
   /* help related */

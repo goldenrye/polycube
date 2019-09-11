@@ -28,6 +28,12 @@ namespace model {
 enum class SlbChannelLocEnum {
   MSB, LSB
 };
+enum class SlbIngressActionEnum {
+  DROP, PASS, SLOWPATH
+};
+enum class SlbEgressActionEnum {
+  DROP, PASS, SLOWPATH
+};
 
 /// <summary>
 ///
@@ -65,6 +71,26 @@ public:
   bool channelLenIsSet() const;
   void unsetChannelLen();
 
+  /// <summary>
+  /// Action performed on ingress packets
+  /// </summary>
+  SlbIngressActionEnum getIngressAction() const;
+  void setIngressAction(SlbIngressActionEnum value);
+  bool ingressActionIsSet() const;
+  void unsetIngressAction();
+  static std::string SlbIngressActionEnum_to_string(const SlbIngressActionEnum &value);
+  static SlbIngressActionEnum string_to_SlbIngressActionEnum(const std::string &str);
+
+  /// <summary>
+  /// Action performed on egress packets
+  /// </summary>
+  SlbEgressActionEnum getEgressAction() const;
+  void setEgressAction(SlbEgressActionEnum value);
+  bool egressActionIsSet() const;
+  void unsetEgressAction();
+  static std::string SlbEgressActionEnum_to_string(const SlbEgressActionEnum &value);
+  static SlbEgressActionEnum string_to_SlbEgressActionEnum(const std::string &str);
+
 private:
   std::string m_name;
   bool m_nameIsSet;
@@ -72,6 +98,10 @@ private:
   bool m_channelLocIsSet;
   uint8_t m_channelLen;
   bool m_channelLenIsSet;
+  SlbIngressActionEnum m_ingressAction;
+  bool m_ingressActionIsSet;
+  SlbEgressActionEnum m_egressAction;
+  bool m_egressActionIsSet;
 };
 
 }
