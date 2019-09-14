@@ -170,6 +170,23 @@ read_slb_ingress_action_by_id(const std::string &name) {
 }
 
 /**
+* @brief   Read server-id by ID
+*
+* Read operation of resource: server-id*
+*
+* @param[in] name ID of name
+*
+* Responses:
+* uint16_t
+*/
+uint16_t
+read_slb_server_id_by_id(const std::string &name) {
+  auto slb = get_cube(name);
+  return slb->getServerId();
+
+}
+
+/**
 * @brief   Update slb by ID
 *
 * Update operation of resource: slb*
@@ -272,6 +289,24 @@ update_slb_ingress_action_by_id(const std::string &name, const SlbIngressActionE
 void
 update_slb_list_by_id(const std::vector<SlbJsonObject> &value) {
   throw std::runtime_error("Method not supported");
+}
+
+/**
+* @brief   Update server-id by ID
+*
+* Update operation of resource: server-id*
+*
+* @param[in] name ID of name
+* @param[in] value server id
+*
+* Responses:
+*
+*/
+void
+update_slb_server_id_by_id(const std::string &name, const uint16_t &value) {
+  auto slb = get_cube(name);
+
+  return slb->setServerId(value);
 }
 
 

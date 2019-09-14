@@ -21,8 +21,8 @@ SlbJsonObject::SlbJsonObject() {
   m_nameIsSet = false;
   m_channelLoc = SlbChannelLocEnum::LSB;
   m_channelLocIsSet = true;
-  m_channelLen = 8;
-  m_channelLenIsSet = true;
+  m_channelLenIsSet = false;
+  m_serverIdIsSet = false;
   m_ingressAction = SlbIngressActionEnum::PASS;
   m_ingressActionIsSet = true;
   m_egressAction = SlbEgressActionEnum::PASS;
@@ -34,6 +34,7 @@ SlbJsonObject::SlbJsonObject(const nlohmann::json &val) :
   m_nameIsSet = false;
   m_channelLocIsSet = false;
   m_channelLenIsSet = false;
+  m_serverIdIsSet = false;
   m_ingressActionIsSet = false;
   m_egressActionIsSet = false;
 
@@ -48,6 +49,10 @@ SlbJsonObject::SlbJsonObject(const nlohmann::json &val) :
 
   if (val.count("channel-len")) {
     setChannelLen(val.at("channel-len").get<uint8_t>());
+  }
+
+  if (val.count("server-id")) {
+    setServerId(val.at("server-id").get<uint16_t>());
   }
 
   if (val.count("ingress-action")) {
@@ -75,6 +80,10 @@ nlohmann::json SlbJsonObject::toJson() const {
 
   if (m_channelLenIsSet) {
     val["channel-len"] = m_channelLen;
+  }
+
+  if (m_serverIdIsSet) {
+    val["server-id"] = m_serverId;
   }
 
   if (m_ingressActionIsSet) {
@@ -155,6 +164,23 @@ void SlbJsonObject::unsetChannelLen() {
   m_channelLenIsSet = false;
 }
 
+uint16_t SlbJsonObject::getServerId() const {
+  return m_serverId;
+}
+
+void SlbJsonObject::setServerId(uint16_t value) {
+  m_serverId = value;
+  m_serverIdIsSet = true;
+}
+
+bool SlbJsonObject::serverIdIsSet() const {
+  return m_serverIdIsSet;
+}
+
+void SlbJsonObject::unsetServerId() {
+  m_serverIdIsSet = false;
+}
+
 SlbIngressActionEnum SlbJsonObject::getIngressAction() const {
   return m_ingressAction;
 }
@@ -219,6 +245,8 @@ std::string SlbJsonObject::SlbEgressActionEnum_to_string(const SlbEgressActionEn
       return std::string("pass");
     case SlbEgressActionEnum::SLOWPATH:
       return std::string("slowpath");
+    case SlbEgressActionEnum::SLB:
+      return std::string("slb");
     default:
       throw std::runtime_error("Bad Slb egressAction");
   }
@@ -231,6 +259,8 @@ SlbEgressActionEnum SlbJsonObject::string_to_SlbEgressActionEnum(const std::stri
     return SlbEgressActionEnum::PASS;
   if (JsonObjectBase::iequals("slowpath", str))
     return SlbEgressActionEnum::SLOWPATH;
+  if (JsonObjectBase::iequals("slb", str))
+    return SlbEgressActionEnum::SLB;
   throw std::runtime_error("Slb egressAction is invalid");
 }
 

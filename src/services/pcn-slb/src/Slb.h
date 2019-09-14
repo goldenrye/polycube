@@ -37,6 +37,12 @@ class Slb : public SlbBase {
   void setChannelLen(const uint8_t &value) override;
 
   /// <summary>
+  /// server id
+  /// </summary>
+  uint16_t getServerId() override;
+  void setServerId(const uint16_t &value) override;
+
+  /// <summary>
   /// Action performed on ingress packets
   /// </summary>
   SlbIngressActionEnum getIngressAction() override;
@@ -51,6 +57,7 @@ class Slb : public SlbBase {
  private:
   SlbChannelLocEnum ch_loc;
   uint8_t ch_len;
+  uint16_t serv_id;
   SlbIngressActionEnum i_act;
   SlbEgressActionEnum e_act;
 };

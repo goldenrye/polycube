@@ -15,6 +15,14 @@
 
 using namespace polycube::service;
 
+enum {
+    ACTION = 0,
+    CH_LOC,
+    CH_LEN,
+    SERV_ID,
+    NUM_PARA,
+};
+
 Slb::Slb(const std::string name, const SlbJsonObject &conf)
   : TransparentCube(conf.getBase(), { slb_code_ingress }, { slb_code_egress }),
     SlbBase(name) {
@@ -25,7 +33,9 @@ Slb::Slb(const std::string name, const SlbJsonObject &conf)
   if (conf.channelLenIsSet()) {
     setChannelLen(conf.getChannelLen());
   }
-
+  if (conf.serverIdIsSet()) {
+     setServerId(conf.getServerId());
+  }
     setIngressAction(conf.getIngressAction());
     setEgressAction(conf.getEgressAction());
 }
@@ -47,6 +57,9 @@ SlbChannelLocEnum Slb::getChannelLoc() {
 
 void Slb::setChannelLoc(const SlbChannelLocEnum &value) {
     ch_loc = value;
+    uint8_t loc = static_cast<uint8_t>(value);
+    auto t = get_array_table<uint16_t>("para_map", 0, ProgramType::EGRESS);
+    t.set(CH_LOC, loc);
 }
 
 uint8_t Slb::getChannelLen() {
@@ -55,6 +68,20 @@ uint8_t Slb::getChannelLen() {
 
 void Slb::setChannelLen(const uint8_t &value) {
     ch_len = value;
+    uint8_t len = static_cast<uint8_t>(value);
+    auto t = get_array_table<uint16_t>("para_map", 0, ProgramType::EGRESS);
+    t.set(CH_LEN, len);
+}
+
+uint16_t Slb::getServerId() {
+    return serv_id;
+}
+
+void Slb::setServerId(const uint16_t &value) {
+    serv_id = value;
+    uint16_t sid = static_cast<uint16_t>(value);
+    auto t = get_array_table<uint16_t>("para_map", 0, ProgramType::EGRESS);
+    t.set(SERV_ID, sid);
 }
 
 SlbIngressActionEnum Slb::getIngressAction() {
@@ -75,8 +102,8 @@ SlbEgressActionEnum Slb::getEgressAction() {
 void Slb::setEgressAction(const SlbEgressActionEnum &value) {
     e_act = value;
     uint8_t action = static_cast<uint8_t>(value);
-    auto t = get_array_table<uint8_t>("action_map", 0, ProgramType::EGRESS);
-    t.set(0x0, action);
+    auto t = get_array_table<uint16_t>("para_map", 0, ProgramType::EGRESS);
+    t.set(ACTION, action);
 }
 
 

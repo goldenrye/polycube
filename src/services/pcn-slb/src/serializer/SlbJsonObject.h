@@ -32,7 +32,7 @@ enum class SlbIngressActionEnum {
   DROP, PASS, SLOWPATH
 };
 enum class SlbEgressActionEnum {
-  DROP, PASS, SLOWPATH
+  DROP, PASS, SLOWPATH, SLB
 };
 
 /// <summary>
@@ -72,6 +72,14 @@ public:
   void unsetChannelLen();
 
   /// <summary>
+  /// server id
+  /// </summary>
+  uint16_t getServerId() const;
+  void setServerId(uint16_t value);
+  bool serverIdIsSet() const;
+  void unsetServerId();
+
+  /// <summary>
   /// Action performed on ingress packets
   /// </summary>
   SlbIngressActionEnum getIngressAction() const;
@@ -98,6 +106,8 @@ private:
   bool m_channelLocIsSet;
   uint8_t m_channelLen;
   bool m_channelLenIsSet;
+  uint16_t m_serverId;
+  bool m_serverIdIsSet;
   SlbIngressActionEnum m_ingressAction;
   bool m_ingressActionIsSet;
   SlbEgressActionEnum m_egressAction;

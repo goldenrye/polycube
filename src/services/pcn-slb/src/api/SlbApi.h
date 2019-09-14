@@ -37,6 +37,7 @@ Response read_slb_channel_loc_by_id_handler(const char *name, const Key *keys, s
 Response read_slb_egress_action_by_id_handler(const char *name, const Key *keys, size_t num_keys);
 Response read_slb_ingress_action_by_id_handler(const char *name, const Key *keys, size_t num_keys);
 Response read_slb_list_by_id_handler(const char *name, const Key *keys, size_t num_keys);
+Response read_slb_server_id_by_id_handler(const char *name, const Key *keys, size_t num_keys);
 Response replace_slb_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
 Response update_slb_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
 Response update_slb_channel_len_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
@@ -44,6 +45,7 @@ Response update_slb_channel_loc_by_id_handler(const char *name, const Key *keys,
 Response update_slb_egress_action_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
 Response update_slb_ingress_action_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
 Response update_slb_list_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
+Response update_slb_server_id_by_id_handler(const char *name, const Key *keys, size_t num_keys, const char *value);
 
 Response slb_list_by_id_help(const char *name, const Key *keys, size_t num_keys);
 

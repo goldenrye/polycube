@@ -156,6 +156,23 @@ Response read_slb_list_by_id_handler(
   }
 }
 
+Response read_slb_server_id_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+
+    auto x = read_slb_server_id_by_id(unique_name);
+    nlohmann::json response_body;
+    response_body = x;
+    return { kOk, ::strdup(response_body.dump().c_str()) };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
 Response replace_slb_by_id_handler(
   const char *name, const Key *keys,
   size_t num_keys ,
@@ -282,6 +299,24 @@ Response update_slb_list_by_id_handler(
       unique_value.push_back(a);
     }
     update_slb_list_by_id(unique_value);
+    return { kOk, nullptr };
+  } catch(const std::exception &e) {
+    return { kGenericError, ::strdup(e.what()) };
+  }
+}
+
+Response update_slb_server_id_by_id_handler(
+  const char *name, const Key *keys,
+  size_t num_keys ,
+  const char *value) {
+  // Getting the path params
+  std::string unique_name { name };
+
+  try {
+    auto request_body = nlohmann::json::parse(std::string { value });
+    // The conversion is done automatically by the json library
+    uint16_t unique_value = request_body;
+    update_slb_server_id_by_id(unique_name, unique_value);
     return { kOk, nullptr };
   } catch(const std::exception &e) {
     return { kGenericError, ::strdup(e.what()) };

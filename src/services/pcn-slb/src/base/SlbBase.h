@@ -52,6 +52,12 @@ class SlbBase: public virtual polycube::service::TransparentCube {
   virtual void setChannelLen(const uint8_t &value) = 0;
 
   /// <summary>
+  /// server id
+  /// </summary>
+  virtual uint16_t getServerId() = 0;
+  virtual void setServerId(const uint16_t &value) = 0;
+
+  /// <summary>
   /// Action performed on ingress packets
   /// </summary>
   virtual SlbIngressActionEnum getIngressAction() = 0;

@@ -40,6 +40,7 @@ namespace SlbApiImpl {
   SlbEgressActionEnum read_slb_egress_action_by_id(const std::string &name);
   SlbIngressActionEnum read_slb_ingress_action_by_id(const std::string &name);
   std::vector<SlbJsonObject> read_slb_list_by_id();
+  uint16_t read_slb_server_id_by_id(const std::string &name);
   void replace_slb_by_id(const std::string &name, const SlbJsonObject &value);
   void update_slb_by_id(const std::string &name, const SlbJsonObject &value);
   void update_slb_channel_len_by_id(const std::string &name, const uint8_t &value);
@@ -47,6 +48,7 @@ namespace SlbApiImpl {
   void update_slb_egress_action_by_id(const std::string &name, const SlbEgressActionEnum &value);
   void update_slb_ingress_action_by_id(const std::string &name, const SlbIngressActionEnum &value);
   void update_slb_list_by_id(const std::vector<SlbJsonObject> &value);
+  void update_slb_server_id_by_id(const std::string &name, const uint16_t &value);
 
   /* help related */
   std::vector<nlohmann::fifo_map<std::string, std::string>> read_slb_list_by_id_get_list();

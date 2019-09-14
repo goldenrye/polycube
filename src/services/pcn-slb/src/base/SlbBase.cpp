@@ -28,6 +28,9 @@ void SlbBase::update(const SlbJsonObject &conf) {
   if (conf.channelLenIsSet()) {
     setChannelLen(conf.getChannelLen());
   }
+  if (conf.serverIdIsSet()) {
+    setServerId(conf.getServerId());
+  }
   if (conf.ingressActionIsSet()) {
     setIngressAction(conf.getIngressAction());
   }
@@ -43,6 +46,7 @@ SlbJsonObject SlbBase::toJsonObject() {
   conf.setName(getName());
   conf.setChannelLoc(getChannelLoc());
   conf.setChannelLen(getChannelLen());
+  conf.setServerId(getServerId());
   conf.setIngressAction(getIngressAction());
   conf.setEgressAction(getEgressAction());
 
