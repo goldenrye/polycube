@@ -83,13 +83,13 @@ BPF_ARRAY(para_map, uint16_t, 4);
 BPF_TABLE("array", int, u64, counter, 1);
 BPF_TABLE("array", int, u64, ts_counter, 1);
 BPF_TABLE_SHARED("hash", struct sess_key, u32, sess2ts, 1024);
-BPF_PERF_OUTPUT(events);
 
 static inline
 void calc_mask(struct serv_const *serv, uint16_t *para[]) {
     serv->serv_bits = *para[CH_LEN];
+    serv->ch_loc = *para[CH_LOC];
 
-    if (*para[CH_LOC] == MSB) {
+    if (serv->ch_loc == MSB) {
         serv->serv_value = *para[SERV_ID] << (32-serv->serv_bits);
         serv->msb_mask = ~((1<<(32-serv->serv_bits))-1);
         serv->lsb_mask = (1<<(32-serv->serv_bits))-1;
@@ -98,7 +98,6 @@ void calc_mask(struct serv_const *serv, uint16_t *para[]) {
         serv->msb_mask = ~((1<<serv->serv_bits)-1);
         serv->lsb_mask = (1<<serv->serv_bits)-1;
     }
-    serv->ch_loc = *para[CH_LOC];
 }
 
 static inline
@@ -222,15 +221,9 @@ int slb_egress_handler(struct CTXTYPE *skb, struct serv_const *serv) {
         x_ts_2_sid(ptr, tcp_option_len, data_end, &sess, &tsi, serv);
     }
 
-    event_data.sip = iph->saddr;
-    event_data.dip = iph->daddr;
-    event_data.sport = tcph->source;
-    event_data.dport = tcph->dest;
-    event_data.ts_val = ts_val;
-    event_data.ts_ecr = ts_ecr;
-    event_data.ts_val_orig = ts_val_orig;
-    event_data.ts_xsb = ts_xsb;
-    events.perf_submit_skb(skb, skb->len, &event_data, sizeof(event_data));
+    pcn_log(skb, LOG_DEBUG, "(%I:%u -> %I:%u)", iph->saddr, ntohs(tcph->source), iph->daddr, ntohs(tcph->dest));
+    pcn_log(skb, LOG_DEBUG, "(0x%x --> 0x%x:0x%x), 0x%x", ntohl(ts_val_orig), ntohl(ts_val), ntohl(ts_ecr), ntohl(ts_xsb));
+
     return RX_OK;
 }
 
