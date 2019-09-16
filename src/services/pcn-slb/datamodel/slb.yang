@@ -41,6 +41,7 @@ module slb {
       enum DROP;
       enum PASS;
       enum SLOWPATH;
+      enum SLB;
     }
     default PASS;
     description "Action performed on ingress packets";

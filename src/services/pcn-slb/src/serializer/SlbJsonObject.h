@@ -29,7 +29,7 @@ enum class SlbChannelLocEnum {
   MSB, LSB
 };
 enum class SlbIngressActionEnum {
-  DROP, PASS, SLOWPATH
+  DROP, PASS, SLOWPATH, SLB
 };
 enum class SlbEgressActionEnum {
   DROP, PASS, SLOWPATH, SLB

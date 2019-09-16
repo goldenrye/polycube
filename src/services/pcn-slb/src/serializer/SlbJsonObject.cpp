@@ -206,6 +206,8 @@ std::string SlbJsonObject::SlbIngressActionEnum_to_string(const SlbIngressAction
       return std::string("pass");
     case SlbIngressActionEnum::SLOWPATH:
       return std::string("slowpath");
+    case SlbIngressActionEnum::SLB:
+      return std::string("slb");
     default:
       throw std::runtime_error("Bad Slb ingressAction");
   }
@@ -218,6 +220,8 @@ SlbIngressActionEnum SlbJsonObject::string_to_SlbIngressActionEnum(const std::st
     return SlbIngressActionEnum::PASS;
   if (JsonObjectBase::iequals("slowpath", str))
     return SlbIngressActionEnum::SLOWPATH;
+  if (JsonObjectBase::iequals("slb", str))
+    return SlbIngressActionEnum::SLB;
   throw std::runtime_error("Slb ingressAction is invalid");
 }
 SlbEgressActionEnum SlbJsonObject::getEgressAction() const {

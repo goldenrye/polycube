@@ -54,17 +54,6 @@ struct serv_const {
     uint8_t  ch_loc;
 };
 
-struct event_t {
-    u32 sip;
-    u32 dip;
-    u16 sport;
-    u16 dport;
-    u32 ts_val;
-    u32 ts_ecr;
-    u32 ts_val_orig;
-    u32 ts_xsb;
-};
-
 struct ts_info {
     u32 *ts_val_orig;
     u32 *ts_val;
@@ -79,10 +68,11 @@ struct sess_key {
     u16 dport;
 };
 
-BPF_ARRAY(para_map, uint16_t, 4);
+BPF_TABLE("extern", struct sess_key, u32, sess2ts, 1024);
+BPF_TABLE("extern", int, u16, ingress_para_map, 4);
+BPF_TABLE("array", int, u16, egress_para_map, 1);
 BPF_TABLE("array", int, u64, counter, 1);
 BPF_TABLE("array", int, u64, ts_counter, 1);
-BPF_TABLE_SHARED("hash", struct sess_key, u32, sess2ts, 1024);
 
 static inline
 void calc_mask(struct serv_const *serv, uint16_t *para[]) {
@@ -165,7 +155,6 @@ static inline
 int slb_egress_handler(struct CTXTYPE *skb, struct serv_const *serv) {
     int zero = 0;
     u64 *value;
-    struct event_t event_data = {};
 
     void *data = (void *)(long)skb->data;
     void *data_end = (void *)(long)skb->data_end;
@@ -232,26 +221,26 @@ static int handle_rx(struct CTXTYPE *ctx, struct pkt_metadata *md) {
   uint16_t action, *para[NUM_PARA];
   struct serv_const serv;
 
-  para[ACTION] = para_map.lookup(&zero);
+  para[ACTION] = egress_para_map.lookup(&zero);
   if (!para[ACTION]) {
       pcn_log(ctx, LOG_ERR, "parameter %d not set", zero);
       return RX_DROP;
   }
   action = *para[ACTION];
 
-  para[CH_LOC] = para_map.lookup(&one);
+  para[CH_LOC] = ingress_para_map.lookup(&one);
   if (!para[CH_LOC]) {
       pcn_log(ctx, LOG_ERR, "parameter %d not set", one);
       return RX_DROP;
   }
 
-  para[CH_LEN] = para_map.lookup(&two);
+  para[CH_LEN] = ingress_para_map.lookup(&two);
   if (!para[CH_LEN]) {
       pcn_log(ctx, LOG_ERR, "parameter %d not set", two);
       return RX_DROP;
   }
 
-  para[SERV_ID] = para_map.lookup(&three);
+  para[SERV_ID] = ingress_para_map.lookup(&three);
   if (!para[SERV_ID]) {
       pcn_log(ctx, LOG_ERR, "parameter %d not set", three);
       return RX_DROP;
