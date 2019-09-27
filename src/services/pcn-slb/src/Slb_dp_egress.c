@@ -22,6 +22,10 @@
 #include <uapi/linux/tcp.h>
 #include <uapi/linux/pkt_cls.h>
 
+/* TODO: move the definition to a file shared by control & data path*/
+#define MD_PKT_FROM_CONTROLLER  (1UL << 0)
+#define MD_EGRESS_CONTEXT       (1UL << 1)
+
 enum {
   SLOWPATH_REASON = 1,
 };
@@ -255,9 +259,17 @@ static int handle_rx(struct CTXTYPE *ctx, struct pkt_metadata *md) {
     pcn_log(ctx, LOG_DEBUG, "Slb egress: passing packet");
     return RX_OK;
   case SLOWPATH:
+    if (ctx->cb[2] & MD_PKT_FROM_CONTROLLER) {
+        pcn_log(ctx, LOG_DEBUG, "packet from controller, return");
+        return RX_OK;
+    }
     pcn_log(ctx, LOG_DEBUG, "Slb egress: sending packet to slow path");
     return pcn_pkt_controller(ctx, md, SLOWPATH_REASON);
   case SLB:
+    if (ctx->cb[2] & MD_PKT_FROM_CONTROLLER) {
+        pcn_log(ctx, LOG_DEBUG, "packet from controller, return");
+        return RX_OK;
+    }
     pcn_log(ctx, LOG_DEBUG, "Slb egress: slb process");
     calc_mask(&serv, para);
     return slb_egress_handler(ctx, &serv);

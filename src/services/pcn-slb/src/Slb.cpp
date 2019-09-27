@@ -49,6 +49,9 @@ void Slb::packet_in(polycube::service::Sense sense,
     polycube::service::PacketInMetadata &md,
     const std::vector<uint8_t> &packet) {
     logger()->debug("Packet received");
+
+    EthernetII pkt(&packet[0], packet.size());
+    send_packet_out(pkt, sense, false);
 }
 
 SlbChannelLocEnum Slb::getChannelLoc() {
