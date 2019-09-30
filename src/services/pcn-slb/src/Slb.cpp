@@ -14,6 +14,7 @@
 #include "Slb_dp_egress.h"
 
 using namespace polycube::service;
+using namespace Tins;
 
 enum {
     ACTION = 0,
@@ -51,6 +52,17 @@ void Slb::packet_in(polycube::service::Sense sense,
     logger()->debug("Packet received");
 
     EthernetII pkt(&packet[0], packet.size());
+    TCP *tcp = pkt.find_pdu<TCP>();
+    if (tcp) {
+        const TCP::option *opt = tcp->search_option(TCP::TSOPT);
+        if (!opt) {
+            logger()->debug("add TCP timestamp option");
+            TCP::option tsopt(TCP::TSOPT, 10);
+            tcp->add_option(tsopt);
+        } else {
+            logger()->debug("packet with TS option");
+        }
+    }
     send_packet_out(pkt, sense, false);
 }
 

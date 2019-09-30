@@ -10,7 +10,7 @@
 
 
 #include "../base/SlbBase.h"
-#include <tins/ethernetII.h>
+#include <tins/tins.h>
 
 
 using namespace polycube::service::model;

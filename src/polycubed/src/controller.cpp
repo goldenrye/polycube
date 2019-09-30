@@ -26,8 +26,10 @@
 #include "polycube/services/utils.h"
 
 #include <iostream>
+#include <tins/tins.h>
 
 using namespace polycube::service;
+using namespace Tins;
 
 namespace polycube {
 namespace polycubed {
@@ -445,7 +447,12 @@ void Controller::send_packet_to_cube(uint16_t module_index, uint16_t port_id,
   }
   metadata_table_->update_value(ctrl_rx_md_index_, md_temp);
 
-  iface_->send(const_cast<std::vector<uint8_t> &>(packet));
+  EthernetII pkt(&packet[0], packet.size());
+  HWAddress<6> mac(iface_->getMAC());
+  pkt.dst_addr(mac);
+  const std::vector<uint8_t> &p = pkt.serialize();
+  iface_->send(const_cast<std::vector<uint8_t> &>(p));
+  //iface_->send(const_cast<std::vector<uint8_t> &>(packet));
 }
 
 void Controller::start() {
