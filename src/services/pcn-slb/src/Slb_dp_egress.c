@@ -28,6 +28,7 @@
 
 enum {
   SLOWPATH_REASON = 1,
+  NO_TSOPT_REASON = 2,
 };
 
 enum {
@@ -95,7 +96,7 @@ void calc_mask(struct serv_const *serv, uint16_t *para[]) {
 }
 
 static inline
-int x_ts_2_sid(void *ptr, u8 tcp_option_len, void *data_end,
+bool x_ts_2_sid(void *ptr, u8 tcp_option_len, void *data_end,
                 struct sess_key *sess, struct ts_info *ts_info,
                 struct serv_const *serv) {
     u8 remain_len = tcp_option_len;
@@ -147,16 +148,16 @@ int x_ts_2_sid(void *ptr, u8 tcp_option_len, void *data_end,
             *(u32*)(ptr+2) = *ts_info->ts_val;
             *ts_info->ts_ecr = *(u32*)(ptr+6);
 
-            break;
+            return true;
         }
         ptr += len;
         remain_len -= len;
     }
-    return 0;
+    return false;
 }
 
 static inline
-int slb_egress_handler(struct CTXTYPE *skb, struct serv_const *serv) {
+int slb_egress_handler(struct CTXTYPE *skb, struct pkt_metadata *md, struct serv_const *serv) {
     int zero = 0;
     u64 *value;
 
@@ -166,6 +167,7 @@ int slb_egress_handler(struct CTXTYPE *skb, struct serv_const *serv) {
     struct iphdr *iph = data + sizeof(*eth);
     struct tcphdr *tcph;
     void *ptr;
+    bool xlate = false;
 
     if (data + sizeof(*eth) + sizeof(*iph) > data_end)
         return RX_OK;
@@ -211,7 +213,11 @@ int slb_egress_handler(struct CTXTYPE *skb, struct serv_const *serv) {
         sess.dip = iph->daddr;
         sess.sport = tcph->source;
         sess.dport = tcph->dest;
-        x_ts_2_sid(ptr, tcp_option_len, data_end, &sess, &tsi, serv);
+        xlate = x_ts_2_sid(ptr, tcp_option_len, data_end, &sess, &tsi, serv);
+    }
+
+    if (!xlate) {
+        return pcn_pkt_controller(skb, md, NO_TSOPT_REASON);
     }
 
     pcn_log(skb, LOG_DEBUG, "(%I:%u -> %I:%u)", iph->saddr, ntohs(tcph->source), iph->daddr, ntohs(tcph->dest));
@@ -272,7 +278,7 @@ static int handle_rx(struct CTXTYPE *ctx, struct pkt_metadata *md) {
     }
     pcn_log(ctx, LOG_DEBUG, "Slb egress: slb process");
     calc_mask(&serv, para);
-    return slb_egress_handler(ctx, &serv);
+    return slb_egress_handler(ctx, md, &serv);
   default:
     pcn_log(ctx, LOG_ERR, "Slb egress: bad action %d", action);
     return RX_DROP;

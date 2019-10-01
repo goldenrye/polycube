@@ -55,10 +55,13 @@ void Slb::packet_in(polycube::service::Sense sense,
     TCP *tcp = pkt.find_pdu<TCP>();
     if (tcp) {
         const TCP::option *opt = tcp->search_option(TCP::TSOPT);
+        /* adding the TS option won't help the client reply the packet with TS opt */
         if (!opt) {
-            logger()->debug("add TCP timestamp option");
-            TCP::option tsopt(TCP::TSOPT, 10);
+            logger()->debug("add TCP timestamp option, original pkt len: {0}", pkt.size());
+            const uint8_t data[] = {1, 2, 3, 4, 0, 0, 0, 0};
+            TCP::option tsopt(TCP::TSOPT, 8, data);
             tcp->add_option(tsopt);
+            logger()->debug("new pkt len: {0}", pkt.size());
         } else {
             logger()->debug("packet with TS option");
         }

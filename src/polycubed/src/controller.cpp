@@ -447,12 +447,18 @@ void Controller::send_packet_to_cube(uint16_t module_index, uint16_t port_id,
   }
   metadata_table_->update_value(ctrl_rx_md_index_, md_temp);
 
-  EthernetII pkt(&packet[0], packet.size());
-  HWAddress<6> mac(iface_->getMAC());
-  pkt.dst_addr(mac);
-  const std::vector<uint8_t> &p = pkt.serialize();
-  iface_->send(const_cast<std::vector<uint8_t> &>(p));
-  //iface_->send(const_cast<std::vector<uint8_t> &>(packet));
+  if (sense == service::Sense::EGRESS) {
+      iface_->send(const_cast<std::vector<uint8_t> &>(packet));
+  } else {
+      /* ingress packet needs modifying the destination MAC address
+         otherwise the stack will drop the packet (PACKET_OTHERS)
+       */
+      EthernetII pkt(&packet[0], packet.size());
+      HWAddress<6> mac(iface_->getMAC());
+      pkt.dst_addr(mac);
+      const std::vector<uint8_t> &p = pkt.serialize();
+      iface_->send(const_cast<std::vector<uint8_t> &>(p));
+  }
 }
 
 void Controller::start() {
