@@ -1,0 +1,876 @@
+---
+swagger: "2.0"
+info:
+  description: "slb API generated from slb.yang"
+  version: "1.0.0"
+  title: "slb API"
+  x-yang-path: "/home/jpi/polycube-test/src/services/pcn-slb/datamodel/slb.yang"
+  x-service-name: "slb"
+host: "localhost:8080"
+basePath: "/"
+tags:
+- name: "slb"
+schemes:
+- "http"
+paths:
+  /slb/{name}/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read slb by ID"
+      description: "Read operation of resource: slb"
+      operationId: "readSlbByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            $ref: "#/definitions/Slb"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    post:
+      tags:
+      - "slb"
+      summary: "Create slb by ID"
+      description: "Create operation of resource: slb"
+      operationId: "createSlbByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "slb"
+        description: "slbbody object"
+        required: true
+        schema:
+          $ref: "#/definitions/Slb"
+        x-exportParamName: "Slb"
+      responses:
+        201:
+          description: "Created: Successful operation"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not created"
+        409:
+          description: "Conflict: Resource not created"
+      x-has-default-impl: true
+    put:
+      tags:
+      - "slb"
+      summary: "Replace slb by ID"
+      description: "Replace operation of resource: slb"
+      operationId: "replaceSlbByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "slb"
+        description: "slbbody object"
+        required: true
+        schema:
+          $ref: "#/definitions/Slb"
+        x-exportParamName: "Slb"
+      responses:
+        201:
+          description: "OK: Resource replaced successfully"
+        204:
+          description: "No content: Resource modified successfully"
+        400:
+          description: "Bad request: resource not replaced"
+        404:
+          description: "Resource not found"
+      x-has-default-impl: true
+    delete:
+      tags:
+      - "slb"
+      summary: "Delete slb by ID"
+      description: "Delete operation of resource: slb"
+      operationId: "deleteSlbByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        204:
+          description: "No content: Resource deleted"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Resource not found"
+      x-has-default-impl: true
+    patch:
+      tags:
+      - "slb"
+      summary: "Update slb by ID"
+      description: "Update operation of resource: slb"
+      operationId: "updateSlbByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "slb"
+        description: "slbbody object"
+        required: true
+        schema:
+          $ref: "#/definitions/Slb"
+        x-exportParamName: "Slb"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read slb by ID"
+      description: "Read operation of resource: slb"
+      operationId: "readSlbListByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Slb"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+      x-has-default-impl: true
+    patch:
+      tags:
+      - "slb"
+      summary: "Update slb by ID"
+      description: "Update operation of resource: slb"
+      operationId: "updateSlbListByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "slb"
+        description: "slbbody object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Slb"
+        x-exportParamName: "Slb"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/{name}/uuid/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read uuid by ID"
+      description: "Read operation of resource: uuid"
+      operationId: "readSlbUuidByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            format: "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+            description: "UUID of the Cube"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+      x-is-base-datamodel: true
+  /slb/{name}/type/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read type by ID"
+      description: "Read operation of resource: type"
+      operationId: "readSlbTypeByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            description: "Type of the Cube (TC, XDP_SKB, XDP_DRV)"
+            example: "TC"
+            enum:
+            - "TC"
+            - "XDP_SKB"
+            - "XDP_DRV"
+            default: "TC"
+          x-is-enum: "true"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+      x-is-base-datamodel: true
+  /slb/{name}/service-name/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read service-name by ID"
+      description: "Read operation of resource: service-name"
+      operationId: "readSlbServiceNameByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            example: "helloworld"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+      x-is-base-datamodel: true
+  /slb/{name}/loglevel/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read loglevel by ID"
+      description: "Read operation of resource: loglevel"
+      operationId: "readSlbLoglevelByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            description: "Defines the logging level of a service instance, from none\
+              \ (OFF) to the most verbose (TRACE)"
+            example: "INFO"
+            enum:
+            - "TRACE"
+            - "DEBUG"
+            - "INFO"
+            - "WARN"
+            - "ERR"
+            - "CRITICAL"
+            - "OFF"
+            default: "INFO"
+          x-is-enum: "true"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+      x-is-base-datamodel: true
+    patch:
+      tags:
+      - "slb"
+      summary: "Update loglevel by ID"
+      description: "Update operation of resource: loglevel"
+      operationId: "updateSlbLoglevelByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "loglevel"
+        description: "Defines the logging level of a service instance, from none (OFF)\
+          \ to the most verbose (TRACE)"
+        required: true
+        schema:
+          type: "string"
+          description: "Defines the logging level of a service instance, from none\
+            \ (OFF) to the most verbose (TRACE)"
+          example: "INFO"
+          enum:
+          - "TRACE"
+          - "DEBUG"
+          - "INFO"
+          - "WARN"
+          - "ERR"
+          - "CRITICAL"
+          - "OFF"
+          default: "INFO"
+        x-is-enum: "true"
+        x-exportParamName: "Loglevel"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+      x-is-base-datamodel: true
+  /slb/{name}/channel-loc/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read channel-loc by ID"
+      description: "Read operation of resource: channel-loc"
+      operationId: "readSlbChannelLocByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            description: "where the channel info located? Default is LSB."
+            enum:
+            - "MSB"
+            - "LSB"
+            default: "LSB"
+          x-is-enum: "true"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    patch:
+      tags:
+      - "slb"
+      summary: "Update channel-loc by ID"
+      description: "Update operation of resource: channel-loc"
+      operationId: "updateSlbChannelLocByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "channel-loc"
+        description: "where the channel info located? Default is LSB."
+        required: true
+        schema:
+          type: "string"
+          description: "where the channel info located? Default is LSB."
+          enum:
+          - "MSB"
+          - "LSB"
+          default: "LSB"
+        x-is-enum: "true"
+        x-exportParamName: "ChannelLoc"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/{name}/channel-len/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read channel-len by ID"
+      description: "Read operation of resource: channel-len"
+      operationId: "readSlbChannelLenByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "integer"
+            format: "uint8"
+            description: "number of bits used for channel"
+            default: 8
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    patch:
+      tags:
+      - "slb"
+      summary: "Update channel-len by ID"
+      description: "Update operation of resource: channel-len"
+      operationId: "updateSlbChannelLenByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "channel-len"
+        description: "number of bits used for channel"
+        required: true
+        schema:
+          type: "integer"
+          format: "uint8"
+          description: "number of bits used for channel"
+          default: 8
+        x-exportParamName: "ChannelLen"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/{name}/server-id/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read server-id by ID"
+      description: "Read operation of resource: server-id"
+      operationId: "readSlbServerIdByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "integer"
+            format: "uint16"
+            description: "server id"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    patch:
+      tags:
+      - "slb"
+      summary: "Update server-id by ID"
+      description: "Update operation of resource: server-id"
+      operationId: "updateSlbServerIdByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "server-id"
+        description: "server id"
+        required: true
+        schema:
+          type: "integer"
+          format: "uint16"
+          description: "server id"
+        x-exportParamName: "ServerId"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/{name}/ingress-action/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read ingress-action by ID"
+      description: "Read operation of resource: ingress-action"
+      operationId: "readSlbIngressActionByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            description: "Action performed on ingress packets"
+            enum:
+            - "DROP"
+            - "PASS"
+            - "SLOWPATH"
+            - "SLB"
+            default: "PASS"
+          x-is-enum: "true"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    patch:
+      tags:
+      - "slb"
+      summary: "Update ingress-action by ID"
+      description: "Update operation of resource: ingress-action"
+      operationId: "updateSlbIngressActionByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "ingress-action"
+        description: "Action performed on ingress packets"
+        required: true
+        schema:
+          type: "string"
+          description: "Action performed on ingress packets"
+          enum:
+          - "DROP"
+          - "PASS"
+          - "SLOWPATH"
+          - "SLB"
+          default: "PASS"
+        x-is-enum: "true"
+        x-exportParamName: "IngressAction"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+  /slb/{name}/egress-action/:
+    get:
+      tags:
+      - "slb"
+      summary: "Read egress-action by ID"
+      description: "Read operation of resource: egress-action"
+      operationId: "readSlbEgressActionByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      responses:
+        200:
+          description: "OK: Successful operation"
+          schema:
+            type: "string"
+            description: "Action performed on egress packets"
+            enum:
+            - "DROP"
+            - "PASS"
+            - "SLOWPATH"
+            - "SLB"
+            default: "PASS"
+          x-is-enum: "true"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+        405:
+          description: "Method not allowed: Use POST to invoke operations"
+    patch:
+      tags:
+      - "slb"
+      summary: "Update egress-action by ID"
+      description: "Update operation of resource: egress-action"
+      operationId: "updateSlbEgressActionByID"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "ID of name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - in: "body"
+        name: "egress-action"
+        description: "Action performed on egress packets"
+        required: true
+        schema:
+          type: "string"
+          description: "Action performed on egress packets"
+          enum:
+          - "DROP"
+          - "PASS"
+          - "SLOWPATH"
+          - "SLB"
+          default: "PASS"
+        x-is-enum: "true"
+        x-exportParamName: "EgressAction"
+      responses:
+        200:
+          description: "OK: Successful update"
+        204:
+          description: "No content: Successful update"
+        403:
+          description: "Forbidden: User not authorized"
+        404:
+          description: "Not found: Resource not found"
+definitions:
+  Slb:
+    properties:
+      name:
+        type: "string"
+        example: "slb1"
+        description: "Name of the slb service"
+        x-has-default-impl: true
+        x-is-required: true
+        x-is-key: true
+        x-is-cube-name: true
+      uuid:
+        type: "string"
+        format: "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+        description: "UUID of the Cube"
+        readOnly: true
+        x-is-base-datamodel: true
+      type:
+        type: "string"
+        example: "TC"
+        description: "Type of the Cube (TC, XDP_SKB, XDP_DRV)"
+        readOnly: true
+        default: "TC"
+        enum:
+        - "TC"
+        - "XDP_SKB"
+        - "XDP_DRV"
+        x-is-base-datamodel: true
+      service-name:
+        type: "string"
+        example: "helloworld"
+        readOnly: true
+        x-is-base-datamodel: true
+      loglevel:
+        type: "string"
+        example: "INFO"
+        description: "Defines the logging level of a service instance, from none (OFF)\
+          \ to the most verbose (TRACE)"
+        default: "INFO"
+        enum:
+        - "TRACE"
+        - "DEBUG"
+        - "INFO"
+        - "WARN"
+        - "ERR"
+        - "CRITICAL"
+        - "OFF"
+        x-is-base-datamodel: true
+      channel-loc:
+        type: "string"
+        description: "where the channel info located? Default is LSB."
+        default: "LSB"
+        enum:
+        - "MSB"
+        - "LSB"
+      channel-len:
+        type: "integer"
+        format: "uint8"
+        description: "number of bits used for channel"
+      server-id:
+        type: "integer"
+        format: "uint16"
+        description: "server id"
+      ingress-action:
+        type: "string"
+        description: "Action performed on ingress packets"
+        default: "PASS"
+        enum:
+        - "DROP"
+        - "PASS"
+        - "SLOWPATH"
+        - "SLB"
+      egress-action:
+        type: "string"
+        description: "Action performed on egress packets"
+        default: "PASS"
+        enum:
+        - "DROP"
+        - "PASS"
+        - "SLOWPATH"
+        - "SLB"
+    example:
+      service-name: "helloworld"
+      ingress-action: "PASS"
+      channel-loc: "LSB"
+      loglevel: "INFO"
+      egress-action: "PASS"
+      name: "slb1"
+      type: "TC"
+      uuid: "uuid"
+      channel-len: 0
+      server-id: 6
+    x-is-list: "true"
+    x-is-transparent: true
+    x-parent: "Slb"

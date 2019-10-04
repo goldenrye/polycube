@@ -29,23 +29,22 @@ Method | HTTP request | Description
 
 
 # **CreateSlbByID**
-> CreateSlbByID($name, $slb)
-
+> CreateSlbByID(ctx, name, slb)
 Create slb by ID
 
 Create operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **slb** | [**Slb**](Slb.md)| slbbody object | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **slb** | [**Slb**](Slb.md)| slbbody object | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -59,22 +58,21 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteSlbByID**
-> DeleteSlbByID($name)
-
+> DeleteSlbByID(ctx, name)
 Delete slb by ID
 
 Delete operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -88,18 +86,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbByID**
-> Slb ReadSlbByID($name)
-
+> Slb ReadSlbByID(ctx, name)
 Read slb by ID
 
 Read operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -117,18 +114,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbChannelLenByID**
-> int32 ReadSlbChannelLenByID($name)
-
+> int32 ReadSlbChannelLenByID(ctx, name)
 Read channel-len by ID
 
 Read operation of resource: channel-len
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -146,18 +142,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbChannelLocByID**
-> string ReadSlbChannelLocByID($name)
-
+> string ReadSlbChannelLocByID(ctx, name)
 Read channel-loc by ID
 
 Read operation of resource: channel-loc
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -175,18 +170,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbEgressActionByID**
-> string ReadSlbEgressActionByID($name)
-
+> string ReadSlbEgressActionByID(ctx, name)
 Read egress-action by ID
 
 Read operation of resource: egress-action
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -204,18 +198,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbIngressActionByID**
-> string ReadSlbIngressActionByID($name)
-
+> string ReadSlbIngressActionByID(ctx, name)
 Read ingress-action by ID
 
 Read operation of resource: ingress-action
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -233,14 +226,12 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbListByID**
-> []Slb ReadSlbListByID()
-
+> []Slb ReadSlbListByID(ctx, )
 Read slb by ID
 
 Read operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 This endpoint does not need any parameter.
 
 ### Return type
@@ -259,18 +250,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbLoglevelByID**
-> string ReadSlbLoglevelByID($name)
-
+> string ReadSlbLoglevelByID(ctx, name)
 Read loglevel by ID
 
 Read operation of resource: loglevel
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -288,18 +278,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbServerIdByID**
-> int32 ReadSlbServerIdByID($name)
-
+> int32 ReadSlbServerIdByID(ctx, name)
 Read server-id by ID
 
 Read operation of resource: server-id
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -317,18 +306,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbServiceNameByID**
-> string ReadSlbServiceNameByID($name)
-
+> string ReadSlbServiceNameByID(ctx, name)
 Read service-name by ID
 
 Read operation of resource: service-name
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -346,18 +334,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbTypeByID**
-> string ReadSlbTypeByID($name)
-
+> string ReadSlbTypeByID(ctx, name)
 Read type by ID
 
 Read operation of resource: type
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -375,18 +362,17 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReadSlbUuidByID**
-> string ReadSlbUuidByID($name)
-
+> string ReadSlbUuidByID(ctx, name)
 Read uuid by ID
 
 Read operation of resource: uuid
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
 
 ### Return type
 
@@ -404,23 +390,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ReplaceSlbByID**
-> ReplaceSlbByID($name, $slb)
-
+> ReplaceSlbByID(ctx, name, slb)
 Replace slb by ID
 
 Replace operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **slb** | [**Slb**](Slb.md)| slbbody object | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **slb** | [**Slb**](Slb.md)| slbbody object | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -434,23 +419,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbByID**
-> UpdateSlbByID($name, $slb)
-
+> UpdateSlbByID(ctx, name, slb)
 Update slb by ID
 
 Update operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **slb** | [**Slb**](Slb.md)| slbbody object | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **slb** | [**Slb**](Slb.md)| slbbody object | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -464,23 +448,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbChannelLenByID**
-> UpdateSlbChannelLenByID($name, $channelLen)
-
+> UpdateSlbChannelLenByID(ctx, name, channelLen)
 Update channel-len by ID
 
 Update operation of resource: channel-len
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **channelLen** | **int32**| number of bits used for channel | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **channelLen** | **int32**| number of bits used for channel | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -494,23 +477,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbChannelLocByID**
-> UpdateSlbChannelLocByID($name, $channelLoc)
-
+> UpdateSlbChannelLocByID(ctx, name, channelLoc)
 Update channel-loc by ID
 
 Update operation of resource: channel-loc
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **channelLoc** | **string**| where the channel info located? Default is LSB. | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **channelLoc** | **string**| where the channel info located? Default is LSB. | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -524,23 +506,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbEgressActionByID**
-> UpdateSlbEgressActionByID($name, $egressAction)
-
+> UpdateSlbEgressActionByID(ctx, name, egressAction)
 Update egress-action by ID
 
 Update operation of resource: egress-action
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **egressAction** | **string**| Action performed on egress packets | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **egressAction** | **string**| Action performed on egress packets | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -554,23 +535,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbIngressActionByID**
-> UpdateSlbIngressActionByID($name, $ingressAction)
-
+> UpdateSlbIngressActionByID(ctx, name, ingressAction)
 Update ingress-action by ID
 
 Update operation of resource: ingress-action
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **ingressAction** | **string**| Action performed on ingress packets | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **ingressAction** | **string**| Action performed on ingress packets | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -584,22 +564,21 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbListByID**
-> UpdateSlbListByID($slb)
-
+> UpdateSlbListByID(ctx, slb)
 Update slb by ID
 
 Update operation of resource: slb
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **slb** | [**[]Slb**](Slb.md)| slbbody object | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **slb** | [**[]Slb**](Slb.md)| slbbody object | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -613,23 +592,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbLoglevelByID**
-> UpdateSlbLoglevelByID($name, $loglevel)
-
+> UpdateSlbLoglevelByID(ctx, name, loglevel)
 Update loglevel by ID
 
 Update operation of resource: loglevel
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **loglevel** | **string**| Defines the logging level of a service instance, from none (OFF) to the most verbose (TRACE) | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **loglevel** | **string**| Defines the logging level of a service instance, from none (OFF) to the most verbose (TRACE) | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -643,23 +621,22 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateSlbServerIdByID**
-> UpdateSlbServerIdByID($name, $serverId)
-
+> UpdateSlbServerIdByID(ctx, name, serverId)
 Update server-id by ID
 
 Update operation of resource: server-id
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **string**| ID of name | 
- **serverId** | **int32**| server id | 
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **name** | **string**| ID of name | 
+  **serverId** | **int32**| server id | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
