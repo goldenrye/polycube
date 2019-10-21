@@ -46,7 +46,7 @@ Slb::~Slb() {
   logger()->info("Destroying Slb instance");
 }
 
-void Slb::packet_in(polycube::service::Sense sense,
+void Slb::packet_in(polycube::service::Direction direction,
     polycube::service::PacketInMetadata &md,
     const std::vector<uint8_t> &packet) {
     logger()->debug("Packet received");
@@ -66,7 +66,7 @@ void Slb::packet_in(polycube::service::Sense sense,
             logger()->debug("packet with TS option");
         }
     }
-    send_packet_out(pkt, sense, false);
+    send_packet_out(pkt, direction, false);
 }
 
 SlbChannelLocEnum Slb::getChannelLoc() {

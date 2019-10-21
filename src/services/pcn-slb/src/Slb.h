@@ -20,7 +20,7 @@ class Slb : public SlbBase {
   Slb(const std::string name, const SlbJsonObject &conf);
   virtual ~Slb();
 
-  void packet_in(polycube::service::Sense sense,
+  void packet_in(polycube::service::Direction direction,
                  polycube::service::PacketInMetadata &md,
                  const std::vector<uint8_t> &packet) override;
 
