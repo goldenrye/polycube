@@ -25,6 +25,7 @@ import (
 
 	"github.com/polycube-network/polycube/src/components/k8s/utils"
 
+	//k8sddos "github.com/polycube-network/polycube/src/components/k8s/utils/k8sddos"
 	k8sfilter "github.com/polycube-network/polycube/src/components/k8s/utils/k8sfilter"
 	k8switch "github.com/polycube-network/polycube/src/components/k8s/utils/k8switch"
 
@@ -33,6 +34,7 @@ import (
 
 	// importing controllers
 	pcn_controllers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/controllers"
+	//fwController "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/fwController"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -69,6 +71,7 @@ var (
 
 	k8switchAPI  *k8switch.K8switchApiService
 	k8sfilterAPI *k8sfilter.K8sfilterApiService
+	//k8sddosAPI   *k8sddos.DdosmitigatorApiService
 
 	nodeIP string
 
@@ -116,6 +119,10 @@ func main() {
 	cfgK8sfilter := k8sfilter.Configuration{BasePath: basePath}
 	srK8sfilter := k8sfilter.NewAPIClient(&cfgK8sfilter)
 	k8sfilterAPI = srK8sfilter.K8sfilterApi
+
+	//cfgK8sddos := k8sddos.Configuration{BasePath: basePath}
+	//srK8sddos := k8sddos.NewAPIClient(&cfgK8sddos)
+	//k8sddosAPI := srK8sddos.DdosmitigatorApi
 
 	kubeconfig := "/var/lib/pcn_k8s/kubeconfig.conf"
 
@@ -231,6 +238,8 @@ func main() {
 	if err0 != nil {
 		panic(err0.Error())
 	}
+
+	//go fwController.Run()
 
 	// kv handler
 	go kvM.Loop()

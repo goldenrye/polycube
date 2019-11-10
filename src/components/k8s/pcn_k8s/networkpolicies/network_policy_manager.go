@@ -1,13 +1,19 @@
 package networkpolicies
 
 import (
+	"context"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
+
 	parsers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/networkpolicies/parsers"
+	log "github.com/sirupsen/logrus"
 
 	pcn_controllers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/controllers"
+	dm "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/ddosmanager"
 	pcn_firewall "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/networkpolicies/pcn_firewall"
 	v1beta "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/pkg/apis/polycube.network/v1beta"
 	pcn_types "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/types"
@@ -55,6 +61,10 @@ type NetworkPolicyManager struct {
 	policyUnsubscriptors map[string]*nsUnsubscriptor
 	// servPolicies contains function to be used when unsubscribing
 	servPolicies map[string]*servPolicy
+
+	// Ddos enable status
+	DdosEnable  bool
+	DdosManager map[*core_v1.Pod]*dm.DdosManager
 }
 
 // nsUnsubscriptor contains information about namespace events that are
@@ -70,6 +80,8 @@ type servPolicy struct {
 	upd map[string]bool
 	del map[string]bool
 }
+
+const EtcdURLDefault string = "http://127.0.0.1:30901"
 
 // startFirewall is a pointer to the StartFirewall method of the
 // pcn_firewall package. It is both used as a shortcut and for testing purposes.
@@ -138,6 +150,8 @@ func StartNetworkPolicyManager(nodeName string) PcnNetworkPolicyManager {
 	//-------------------------------------
 
 	pcn_firewall.SetFwAPI(basePath)
+
+	go manager.checkDFWConfig()
 
 	return &manager
 }
@@ -860,6 +874,13 @@ func (manager *NetworkPolicyManager) checkNewPod(pod, prev *core_v1.Pod) {
 	//-------------------------------------
 
 	manager.checkIfPodNeedsProtection(pod, fw)
+
+	if manager.DdosEnable {
+		ddosManager, existed := manager.LinkDdos(pod)
+		if !existed {
+			manager.DdosManager[pod] = ddosManager
+		}
+	}
 }
 
 // checkIfcheckIfPodNeedsProtection checks if the *new* provided pod should
@@ -1052,4 +1073,77 @@ func (manager *NetworkPolicyManager) deleteFirewallManager(fwKey string) {
 	manager.localFirewalls[fwKey].Destroy()
 	delete(manager.localFirewalls, fwKey)
 	delete(manager.flaggedForDeletion, fwKey)
+}
+
+func (manager *NetworkPolicyManager) checkDFWConfig() error {
+	log.Debug("run firewall controller")
+
+	cli, err := clientv3.New(clientv3.Config{
+		Endpoints:   []string{EtcdURLDefault},
+		DialTimeout: 10 * time.Second,
+	})
+
+	if err != nil {
+		panic("create etcd client failed")
+	}
+
+	defer cli.Close()
+
+	rch := cli.Watch(context.Background(), "/dfw/config",
+		clientv3.WithPrefix())
+
+	for wresp := range rch {
+		for _, ev := range wresp.Events {
+			log.Debugf("%s %q: %q", ev.Type, ev.Kv.Key, ev.Kv.Value)
+			manager.process_event(ev.Type, ev.Kv.Key, ev.Kv.Value)
+		}
+	}
+
+	return nil
+}
+
+func (manager *NetworkPolicyManager) process_event(evt mvccpb.Event_EventType, key []byte, value []byte) {
+	token := strings.Split(string(key), "/")
+	switch token[3] {
+	case "ddos":
+		manager.process_ddos(evt, value)
+	case "waf":
+		manager.process_waf(evt, value)
+	default:
+		log.Debugf("invalid feature [%s]", token[2])
+	}
+}
+
+func (manager *NetworkPolicyManager) process_ddos(evt mvccpb.Event_EventType, value []byte) {
+	switch evt {
+	case mvccpb.PUT:
+		if strings.Compare(string(value), "enable") == 0 {
+			log.Debug("ddos enabled")
+			manager.DdosEnable = true
+		} else if strings.Compare(string(value), "disable") == 0 {
+			log.Debug("ddos disable")
+			manager.DdosEnable = false
+		}
+	case mvccpb.DELETE:
+		log.Debug("ddos disable")
+		manager.DdosEnable = false
+	default:
+		log.Debugf("invalid event: [%d]", evt)
+	}
+}
+
+func (manager *NetworkPolicyManager) process_waf(evt mvccpb.Event_EventType, value []byte) {
+	log.Debug("process waf")
+}
+
+func (manager *NetworkPolicyManager) LinkDdos(pod *core_v1.Pod) (*dm.DdosManager, bool) {
+	if manager.DdosManager[pod] != nil {
+		return manager.DdosManager[pod], true
+	}
+
+	ddosManager := dm.NewDdosManager(pod)
+	ddosManager.CreateDdosMitigator()
+	manager.DdosManager[pod] = ddosManager
+
+	return ddosManager, false
 }

@@ -128,8 +128,8 @@ func StartFirewall(name, namespace string, labels map[string]string) PcnFirewall
 		// Linked pods
 		linkedPods: map[k8s_types.UID]string{},
 		// The default actions
-		ingressDefaultAction: pcn_types.ActionForward,
-		egressDefaultAction:  pcn_types.ActionForward,
+		ingressDefaultAction: pcn_types.ActionDrop,
+		egressDefaultAction:  pcn_types.ActionDrop,
 		// The priorities
 		priorities: []policyPriority{},
 	}
