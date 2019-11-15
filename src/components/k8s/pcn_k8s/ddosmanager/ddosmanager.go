@@ -31,7 +31,12 @@ func (m *DdosManager) GetDdosAPI() *k8sddos.DdosmitigatorApiService {
 		cfgK8sddos := k8sddos.Configuration{BasePath: basePath}
 		srK8sddos := k8sddos.NewAPIClient(&cfgK8sddos)
 		k8sDdosAPI = srK8sddos.DdosmitigatorApi
+
+		if k8sDdosAPI == nil {
+			panic("failed to create k8sDdosAPI")
+		}
 	}
+
 	return k8sDdosAPI
 }
 
@@ -42,13 +47,14 @@ func (m *DdosManager) CreateDdosMitigator() error {
 		return errors.New("ddosApi is nil")
 	}
 
-	name := m.pod.Namespace + m.pod.Name
+	//name := m.pod.Namespace + m.pod.Name
+	name := "aaa"
 	if _, err := ddosApi.CreateDdosmitigatorByID(nil, name, k8sddos.Ddosmitigator{
 		Name: name,
 		Uuid: uuid.New().String(),
 	}); err != nil {
-		log.Errorf("create ddos %s failed")
-		return errors.New("create ddos failed")
+		log.Errorf("create ddos %s failed, error: %s", name, err.Error())
+		return err
 	}
 
 	return nil
