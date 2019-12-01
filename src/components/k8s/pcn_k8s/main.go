@@ -34,7 +34,7 @@ import (
 
 	// importing controllers
 	pcn_controllers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/controllers"
-	//fwController "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/fwController"
+	dm_manager "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/ddosmanager"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -82,6 +82,7 @@ var (
 	nodesWatcher     watch.Interface
 
 	networkPolicyManager networkpolicies.PcnNetworkPolicyManager
+	dmManager            *dm_manager.DdosMitigatorManager
 
 	stop bool
 )
@@ -239,8 +240,6 @@ func main() {
 		panic(err0.Error())
 	}
 
-	//go fwController.Run()
-
 	// kv handler
 	go kvM.Loop()
 
@@ -251,6 +250,13 @@ func main() {
 
 	// Start the policy manager
 	networkPolicyManager = networkpolicies.StartNetworkPolicyManager(nodeName)
+
+	dmManager = dm_manager.StartDdosMitigatorManager(nodeName)
+	if dmManager == nil {
+		panic("failed to instantiate the ddosmitigator manager")
+	}
+
+	go dmManager.WatchDB()
 
 	// read and process all notifications for both, pods and enpoints
 	// Notice that a notification is processed at the time, so
