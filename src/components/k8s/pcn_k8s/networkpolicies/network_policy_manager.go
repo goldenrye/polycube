@@ -1,19 +1,19 @@
 package networkpolicies
 
 import (
-	"context"
+	//"context"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/coreos/etcd/clientv3"
-	"github.com/coreos/etcd/mvcc/mvccpb"
+	//"github.com/coreos/etcd/clientv3"
+	//"github.com/coreos/etcd/mvcc/mvccpb"
 
 	parsers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/networkpolicies/parsers"
-	log "github.com/sirupsen/logrus"
+	//log "github.com/sirupsen/logrus"
 
 	pcn_controllers "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/controllers"
-	dm "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/ddosmanager"
+	//dm "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/ddosmanager"
 	pcn_firewall "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/networkpolicies/pcn_firewall"
 	v1beta "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/pkg/apis/polycube.network/v1beta"
 	pcn_types "github.com/polycube-network/polycube/src/components/k8s/pcn_k8s/types"
@@ -63,8 +63,8 @@ type NetworkPolicyManager struct {
 	servPolicies map[string]*servPolicy
 
 	// Ddos enable status
-	DdosEnable  bool
-	DdosManager map[*core_v1.Pod]*dm.DdosManager
+	//DdosEnable  bool
+	//DdosManager map[*core_v1.Pod]*dm.DdosManager
 }
 
 // nsUnsubscriptor contains information about namespace events that are
@@ -151,7 +151,7 @@ func StartNetworkPolicyManager(nodeName string) PcnNetworkPolicyManager {
 
 	pcn_firewall.SetFwAPI(basePath)
 
-	go manager.checkDFWConfig()
+	//go manager.checkDFWConfig()
 
 	return &manager
 }
@@ -874,13 +874,6 @@ func (manager *NetworkPolicyManager) checkNewPod(pod, prev *core_v1.Pod) {
 	//-------------------------------------
 
 	manager.checkIfPodNeedsProtection(pod, fw)
-
-	if manager.DdosEnable {
-		ddosManager, existed := manager.LinkDdos(pod)
-		if !existed {
-			manager.DdosManager[pod] = ddosManager
-		}
-	}
 }
 
 // checkIfcheckIfPodNeedsProtection checks if the *new* provided pod should
@@ -1075,6 +1068,7 @@ func (manager *NetworkPolicyManager) deleteFirewallManager(fwKey string) {
 	delete(manager.flaggedForDeletion, fwKey)
 }
 
+/*
 func (manager *NetworkPolicyManager) checkDFWConfig() error {
 	log.Debug("run firewall controller")
 
@@ -1143,7 +1137,10 @@ func (manager *NetworkPolicyManager) LinkDdos(pod *core_v1.Pod) (*dm.DdosManager
 
 	ddosManager := dm.NewDdosManager(pod)
 	ddosManager.CreateDdosMitigator()
+	if manager.DdosManager == nil {
+		manager.DdosManager = make(map[*core_v1.Pod]*dm.DdosManager)
+	}
 	manager.DdosManager[pod] = ddosManager
 
 	return ddosManager, false
-}
+}*/
