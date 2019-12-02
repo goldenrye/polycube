@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+    "sort"
 
 	log "github.com/sirupsen/logrus"
 	core_v1 "k8s.io/api/core/v1"
@@ -28,12 +29,13 @@ type DdosMitigator struct {
 type DdosMitigatorManager struct {
 	localDM   map[string]DdosMitigator
 	etcd_cli  *clientv3.Client
-	dm_enable map[string]bool //dm_enalbe["rel"="product","type"="security"] = enable
+	dm_enable map[string]bool //dm_enalbe[default|"rel"="product","type"="security"] = enable
 }
 
 const (
 	basePath              = "http://127.0.0.1:9000/polycube/v1"
 	EtcdURLDefault string = "http://127.0.0.1:30901"
+    baseCfgPath           = "/config/dfw/ddosmitigator/"
 )
 
 var k8sDdosAPI *k8sddos.DdosmitigatorApiService
@@ -73,7 +75,8 @@ func (m *DdosMitigatorManager) CreateDdosMitigator(name string) error {
 func StartDdosMitigatorManager(node string) *DdosMitigatorManager {
 	var err error
 	manager := DdosMitigatorManager{
-		localDM: make(map[string]DdosMitigator),
+		localDM   : make(map[string]DdosMitigator),
+        dm_enable : make(map[string]bool),
 	}
 
 	if manager.etcd_cli, err = clientv3.New(clientv3.Config{
@@ -134,6 +137,7 @@ func (m *DdosMitigatorManager) PodDelete(new, old *core_v1.Pod) {
 }
 
 func (m *DdosMitigatorManager) CheckIfDMEnable(pod *core_v1.Pod) bool {
+    pod_ns := pod.Namespace
 	pod_label := make(map[string]string)
 	for k, v := range pod.Labels {
 		pod_label[k] = v
@@ -141,6 +145,13 @@ func (m *DdosMitigatorManager) CheckIfDMEnable(pod *core_v1.Pod) bool {
 
 	//find the first label key string (already ordered) contained by pod label
 	for labels, v := range m.dm_enable {
+        str := strings.Split(labels, "|")
+        ns := str[0]
+        labels := str[1]
+
+        if ns != pod_ns {
+            continue
+        }
 		label_map := make(map[string]string)
 
 		// convert the labels string to map
@@ -159,16 +170,41 @@ func (m *DdosMitigatorManager) CheckIfDMEnable(pod *core_v1.Pod) bool {
 }
 
 func (dmm DdosMitigatorManager) WatchDB() {
-	rch := dmm.etcd_cli.Watch(context.Background(), "/config/dfw/ddosmitigator/", clientv3.WithPrefix())
+	rch := dmm.etcd_cli.Watch(context.Background(), baseCfgPath, clientv3.WithPrefix())
 	for wresp := range rch {
 		for _, ev := range wresp.Events {
-			fmt.Printf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+            log.Debugf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+            if !strings.HasPrefix(string(ev.Kv.Key), baseCfgPath) {
+                log.Warnf("key %q doesn't start with %q", ev.Kv.Key, baseCfgPath)
+                return
+            }
+            str := strings.Split(strings.TrimPrefix(string(ev.Kv.Key), baseCfgPath), "/")
+            ns := str[0]
+            labels := strings.Split(str[1], ",")
+            sort.Strings(labels)
+            key := ns + "|"
+            for _, label := range labels {
+                key += label
+            }
+            log.Debugf("key: %q, value: %q", key, ev.Kv.Value)
 			switch ev.Type {
 			case mvccpb.PUT:
-				fmt.Println("put event")
+				log.Debug("put event")
+                if _, ok := dmm.dm_enable[key]; !ok {
+                    if string(ev.Kv.Value) == "enable" {
+                        dmm.dm_enable[key] = true
+                    } else {
+                        dmm.dm_enable[key] = false
+                    }
+                } else {
+                    log.Debugf("key %q exists, old value: %q, new value %q", key, dmm.dm_enable[key], ev.Kv.Value)
+                }
 				break
 			case mvccpb.DELETE:
 				fmt.Println("delete event")
+                if _, ok := dmm.dm_enable[key]; !ok {
+                    delete(dmm.dm_enable, key)
+                }
 				break
 			default:
 				fmt.Printf("invalid event type %d", ev.Type)
