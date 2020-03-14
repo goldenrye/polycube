@@ -76,6 +76,8 @@ class BaseCube : virtual public BaseCubeIface {
   const Guid &uuid() const;
 
   int get_table_fd(const std::string &table_name, int index, ProgramType type);
+  const ebpf::TableDesc &get_table_desc(const std::string &table_name, int index,
+                             ProgramType type);
 
   void set_log_level(LogLevel level);
   LogLevel get_log_level() const;
@@ -88,6 +90,9 @@ class BaseCube : virtual public BaseCubeIface {
  protected:
   static const int _POLYCUBE_MAX_BPF_PROGRAMS = 64;
   static const int _POLYCUBE_MAX_PORTS = 128;
+  static_assert(_POLYCUBE_MAX_PORTS <= 0xffff,
+          "_POLYCUBE_MAX_PORTS shouldn't be great than 0xffff, "
+          "id 0xffff was used by iptables wild card index");
   static std::vector<std::string> cflags;
 
   virtual int load(ebpf::BPF &bpf, ProgramType type) = 0;
