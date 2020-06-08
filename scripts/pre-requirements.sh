@@ -8,8 +8,16 @@ mkdir -p $WORKDIR
 $SUDO apt update
 $SUDO bash -c "apt install --allow-unauthenticated -y wget gnupg2 software-properties-common"
 
-# golang v1.12 still not available in repos
-$SUDO add-apt-repository ppa:longsleep/golang-backports -y || true
+# Release in which has been natively introduced support for golang-go (Ubuntu >= 20.04)
+os_limit_major="20"
+os_limit_minor="04"
+read -r os_major os_minor<<<$(grep -Po 'VERSION_ID="\K.*?(?=")' /etc/os-release | sed 's/\./ /g')
+
+# Checking whether the major release is lower or the minor
+if  (( os_major < os_limit_major || ( os_major == os_limit_major && os_minor < os_limit_minor ) ))
+then
+  $SUDO add-apt-repository ppa:longsleep/golang-backports -y || true
+fi
 
 $SUDO apt update
 PACKAGES=""
